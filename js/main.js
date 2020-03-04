@@ -43,7 +43,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(topPosition);
-		position -= 8;
+		position -= 10;
 		this.shooter.style.top=`${position}px`;
 	}
 }
@@ -56,7 +56,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(topPosition);
-		position += 8;
+		position += 10;
 		this.shooter.style.top=`${position}px`;
 	}
 }
@@ -68,7 +68,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(leftPosition);
-		position -= 8;
+		position -= 10;
 		this.shooter.style.left=`${position}px`;
 	}
 }
@@ -80,7 +80,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(leftPosition);
-		position += 8;
+		position += 10;
 		this.shooter.style.left=`${position}px`;
 	}
 }
@@ -126,7 +126,7 @@ moveUp(){
 				setTimeout (function(){
 					monster.remove();
 				}
-				,300); //test maybe change
+				,200); //test maybe change
 				//monster.classList.add("dead-monster"); //may be will add later to count the point of player
 				scoreCounter.innerText=parseInt(scoreCounter.innerText)+100;
 				}
