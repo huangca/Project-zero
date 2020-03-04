@@ -1,0 +1,53 @@
+@import "mystyle.css";
+
+#main-play{
+	background-color: black;
+	width: 600px;
+	height: 800px;
+	top: 0px;
+	left:0px;
+	position: relative;
+	opacity: 0.7;
+	
+}
+#player-controlled{
+	width:30px;
+	height:30px;
+	position: relative;
+	left:300px;
+	top:700px;
+	background-color: black;
+}
+#boss{
+	width:100px;
+	height: 100px;
+	position: absolute;
+}
+#score{
+	color: white;
+}
+.laser{
+	width:20px;
+	height: 20px;
+	position: absolute;
+}
+.Beam{
+	width:20px;
+	height: 20px;
+	position: absolute;
+}
+.monster{
+	width:30px;
+	height:30px;
+	position: absolute;
+}
+.monster-transition{
+	opacity:1;
+	transition: opacity 1.5 ease-out;
+}
+.dead-monster{
+	width: 30px;
+	height:30px;
+	position: absolute;
+	opacity: 0;
+}
