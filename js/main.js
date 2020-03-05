@@ -1,6 +1,7 @@
 
 const scoreCounter=document.querySelector("#score span");
-let bossLife=2;
+const bullet_speed=2;
+let bossLife=3;
 
 
 function checkBoxInter(ele1,ele2){
@@ -25,6 +26,12 @@ function victory(){
 	clearInterval(thisGame.monsterInterval);
 		clearInterval(thisGame.bossInterval);
 		alert("Victory!");
+}
+
+function cacuLine(x1,y1,x2,y2){
+	let a=(y2-y1)/(x2-x1);
+	let b=y1-(a*x1);
+	return ((y1+bullet_speed)-b)/a;
 }
 
 
@@ -265,7 +272,7 @@ class monsterRed extends monster{
 // 	let ox=parseInt(window.getComputedStyle(ship).getPropertyValue('left'));
 		let ship=document.getElementById('player-controlled');
 
-	//let oy= parseInt(window.getComputedStyle(ship).getPropertyValue('top'));
+	let oy= parseInt(window.getComputedStyle(ship).getPropertyValue('top'));
 	let ox= parseInt(window.getComputedStyle(ship).getPropertyValue('left'));
 
 
@@ -290,13 +297,15 @@ class monsterRed extends monster{
 			laser.remove();
 		}
 		else{
-			laser.style.top=`${yPosition+4}px`;
-			if(xPosition>ox){
-				laser.style.left=`${xPosition-1}px`;
-			}
-			else if(xPosition<ox){
-				laser.style.left=`${xPosition+1}px`;
-			}
+			laser.style.top=`${yPosition+bullet_speed}px`;
+			let tempX=Math.floor(cacuLine(xPosition,yPosition,ox,oy));
+			laser.style.left=`${tempX}px`;
+			// if(xPosition>ox){
+			// 	laser.style.left=`${xPosition-1}px`;
+			// }
+			// else if(xPosition<ox){
+			// 	laser.style.left=`${xPosition+1}px`;
+			// }
 
 
 		}
@@ -397,7 +406,7 @@ class boss extends monster{
 // 	let ox=parseInt(window.getComputedStyle(ship).getPropertyValue('left'));
 		let ship=document.getElementById('player-controlled');
 
-	//let oy= parseInt(window.getComputedStyle(ship).getPropertyValue('top'));
+	let oy= parseInt(window.getComputedStyle(ship).getPropertyValue('top'));
 	let ox= parseInt(window.getComputedStyle(ship).getPropertyValue('left'));
 
 
@@ -421,13 +430,15 @@ class boss extends monster{
 			laser.remove();
 		}
 		else{
-			laser.style.top=`${yPosition+2}px`;
-			if(xPosition>ox){
-				laser.style.left=`${xPosition-1}px`;
-			}
-			else if(xPosition<ox){
-				laser.style.left=`${xPosition+1}px`;
-			}
+			laser.style.top=`${yPosition+bullet_speed}px`;
+			let tempX=Math.floor(cacuLine(xPosition,yPosition,ox,oy));
+			laser.style.left=`${tempX}px`;
+			// if(xPosition>ox){
+			// 	laser.style.left=`${xPosition-1}px`;
+			// }
+			// else if(xPosition<ox){
+			// 	laser.style.left=`${xPosition+1}px`;
+			// }
 
 
 		}
@@ -447,8 +458,19 @@ class Game{
 	gameStar(){
 		window.addEventListener("keydown", this.letShipFlay.bind(this));
 
+		window.addEventListener("gamepadconnected", this.letShipFlayPad.bind(this));
 		//window.addEventListener("gamepadconnected", this.letShipFlay.bind(this));
-		
+		window.addEventListener("gamepadconnected", function(e) {
+
+ 	 	this.letShipFlayPad;
+		});
+
+
+
+
+
+
+
 		this.monsterInterval=setInterval(()=>{this.createMonster()},2000);
 	}
 	gameOver(){
@@ -462,7 +484,7 @@ class Game{
 	}
 
 	 letShipFlay(ev){
-	 //console.log(ev);  //||ev.key===navigator.getGamepads()[0].buttons[0]
+	 //console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
 	if(ev.key==="ArrowUp"){
 		ev.preventDefault();
 		this.player.moveUp();
@@ -485,6 +507,35 @@ class Game{
 		this.player.fireLaser();
 	}
 }
+ letShipFlayPad(ev){
+	 console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
+	 let gp=navigator.getGamepads()[ev.gamepad.index];
+	 console.log(this);
+	 console.log(gp);
+	if(navigator.getGamepads()[0].buttons[0].pressed==true){
+		ev.preventDefault();
+		this.player.moveUp();
+	}
+	else if(navigator.getGamepads()[0].buttons[1].pressed==true){
+		ev.preventDefault();
+		this.player.moveDown();
+	}
+	else if(navigator.getGamepads()[0].buttons[2].pressed==true){
+		ev.preventDefault();
+		this.player.moveLeft();
+	}
+	else if(navigator.getGamepads()[0].buttons[3].pressed==true){
+		ev.preventDefault();
+		this.player.moveRight();
+	}
+
+	else if(navigator.getGamepads()[0].buttons[4].pressed==true){
+		ev.preventDefault();
+		this.player.fireLaser();
+	}
+}
+
+
 	createMonster(){
 		if(parseInt(scoreCounter.innerText)>=500){
 			this.createBoss();
