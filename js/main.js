@@ -1,6 +1,6 @@
 
 const scoreCounter=document.querySelector("#score span");
-const bullet_speed=2;
+const bullet_speed=4;
 let bossLife=3;
 const moveSpeed=5;
 let gameFlag=0;
@@ -105,8 +105,8 @@ moveUp(){
  fireLaser(){
  	let length=document.querySelectorAll('.laser').length;
  	console.log(length);
- 	//if(length>0) return;
- 	//if() return;
+ 	if(length>0) return;
+
 	let laser=this.createLaserElement();
 	$('#main-play').append(laser);
 	this.moveLaser(laser);
@@ -166,31 +166,31 @@ moveUp(){
 	},10);
 }
 
- checkLaserCollision(laser,monster){
-	let laserLeft=parseInt(laser.style.left);
-	let laserTop=parseInt(laser.style.top);
-	let laserBottom=laserTop+20;
-	let laserRight=laserLeft+20;
-	let monsterTop=parseInt(monster.style.top);
-	let monsterBottom=monsterTop+30;
-	let monsterLeft=parseInt(monster.style.left);
-	let monsterRight=monsterLeft+30;
-	let recl=laser.getBoundingClientRect();
-	let recm=monster.getBoundingClientRect();
-	if(laserTop!=0){
+//  checkLaserCollision(laser,monster){
+// 	let laserLeft=parseInt(laser.style.left);
+// 	let laserTop=parseInt(laser.style.top);
+// 	let laserBottom=laserTop+20;
+// 	let laserRight=laserLeft+20;
+// 	let monsterTop=parseInt(monster.style.top);
+// 	let monsterBottom=monsterTop+30;
+// 	let monsterLeft=parseInt(monster.style.left);
+// 	let monsterRight=monsterLeft+30;
+// 	let recl=laser.getBoundingClientRect();
+// 	let recm=monster.getBoundingClientRect();
+// 	if(laserTop!=0){
 
-		//if(laserLeft<=monsterRight&&laserRight>=monsterLeft&&laserTop<=monsterBottom&&laserBottom>=monsterTop){
-		if(recl.left<=recm.right&&recl.right>=recm.left&&recl.top<=recm.bottom&&recl.bottom>=recm.top){	
+// 		//if(laserLeft<=monsterRight&&laserRight>=monsterLeft&&laserTop<=monsterBottom&&laserBottom>=monsterTop){
+// 		if(recl.left<=recm.right&&recl.right>=recm.left&&recl.top<=recm.bottom&&recl.bottom>=recm.top){	
 
-			return true;
-		}else {
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
-}
+// 			return true;
+// 		}else {
+// 			return false;
+// 		}
+// 	}
+// 	else{
+// 		return false;
+// 	}
+// }
 
 
 }
@@ -225,35 +225,32 @@ class monster{
 	},30);
 		}
 
-		checkLaserCollisionShip(laser,ship){
-			if(ship===null) return;
-	let laserLeft=parseInt(laser.style.left);
-	let laserTop=parseInt(laser.style.top);
-	let laserBottom=laserTop+30;
-	let laserRight=laserLeft+30;
-	let shipTop=parseInt(ship.style.top);
-	let shipBottom=shipTop+30;
-	let shipLeft=parseInt(ship.style.left);
-	let shipRight=shipLeft+30;
-	if(laserTop!==790){
+// 		checkLaserCollisionShip(laser,ship){
+// 			if(ship===null) return;
+// 	let laserLeft=parseInt(laser.style.left);
+// 	let laserTop=parseInt(laser.style.top);
+// 	let laserBottom=laserTop+30;
+// 	let laserRight=laserLeft+30;
+// 	let shipTop=parseInt(ship.style.top);
+// 	let shipBottom=shipTop+30;
+// 	let shipLeft=parseInt(ship.style.left);
+// 	let shipRight=shipLeft+30;
+// 	if(laserTop!==790){
 
-		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
-			return true;
-		}else {
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
-}
-
-
-
-
+// 		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
+// 			return true;
+// 		}else {
+// 			return false;
+// 		}
+// 	}
+// 	else{
+// 		return false;
+// 	}
+// }
 
 
 }
+
 class monsterRed extends monster{
 	constructor(monsterImg='images/monster1.png'){
 		super(monsterImg);
@@ -560,6 +557,7 @@ class Game{
 		}
 		if(document.getElementById('player-controlled')=== null){
 			this.gameOver();
+			return;
 		}
 		if(Math.floor(Math.random()*2)===0){
 			let monster=new monsterRed();
