@@ -2,6 +2,17 @@
 const scoreCounter=document.querySelector("#score span");
 const bullet_speed=2;
 let bossLife=3;
+const moveSpeed=5;
+let gameFlag=0;
+
+let rAF = window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.requestAnimationFrame;
+ let rAFStop = window.mozCancelRequestAnimationFrame ||
+  window.webkitCancelRequestAnimationFrame ||
+  window.cancelRequestAnimationFrame;
+
+  let start;
 
 
 function checkBoxInter(ele1,ele2){
@@ -50,7 +61,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(topPosition);
-		position -= 10;
+		position -= moveSpeed;
 		this.shooter.style.top=`${position}px`;
 	}
 }
@@ -63,7 +74,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(topPosition);
-		position += 10;
+		position += moveSpeed;
 		this.shooter.style.top=`${position}px`;
 	}
 }
@@ -75,7 +86,7 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(leftPosition);
-		position -= 10;
+		position -= moveSpeed;
 		this.shooter.style.left=`${position}px`;
 	}
 }
@@ -87,11 +98,15 @@ moveUp(){
 	}
 	else{
 		let position=parseInt(leftPosition);
-		position += 10;
+		position += moveSpeed;
 		this.shooter.style.left=`${position}px`;
 	}
 }
  fireLaser(){
+ 	let length=document.querySelectorAll('.laser').length;
+ 	console.log(length);
+ 	//if(length>0) return;
+ 	//if() return;
 	let laser=this.createLaserElement();
 	$('#main-play').append(laser);
 	this.moveLaser(laser);
@@ -141,12 +156,12 @@ moveUp(){
 		});
 
 
-		if(yPosition===0){
+		if(yPosition<=0){
 			//laser.style.display='none';
 			laser.remove();
 		}
 		else{
-			laser.style.top=`${yPosition-4}px`;
+			laser.style.top=`${yPosition-10}px`;
 		}
 	},10);
 }
@@ -459,20 +474,19 @@ class Game{
 		window.addEventListener("keydown", this.letShipFlay.bind(this));
 
 		window.addEventListener("gamepadconnected", this.letShipFlayPad.bind(this));
+		window.addEventListener("gamepaddisconnected", function() {
+				console.log("disconnect");
+  				rAFStop(start);
+  			});
 		//window.addEventListener("gamepadconnected", this.letShipFlay.bind(this));
-		window.addEventListener("gamepadconnected", function(e) {
+		//window.addEventListener("gamepadconnected", function(e) {
 
- 	 	this.letShipFlayPad;
-		});
-
-
+ // 	 	this.letShipFlayPad;
+	// 	});
 
 
-
-
-
-		this.monsterInterval=setInterval(()=>{this.createMonster()},2000);
-	}
+	 	this.monsterInterval=setInterval(()=>{this.createMonster()},2000);
+	 }
 	gameOver(){
 		// window.removeEventListener("keydown",this.letShipFlay);
 		// clearInterval(this.monsterInterval);
@@ -486,19 +500,19 @@ class Game{
 	 letShipFlay(ev){
 	 //console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
 	if(ev.key==="ArrowUp"){
-		ev.preventDefault();
+		//ev.preventDefault();
 		this.player.moveUp();
 	}
 	else if(ev.key==="ArrowDown"){
-		ev.preventDefault();
+		//ev.preventDefault();
 		this.player.moveDown();
 	}
 	else if(ev.key=="ArrowLeft"){
-		ev.preventDefault();
+		//ev.preventDefault();
 		this.player.moveLeft();
 	}
 	else if(ev.key=="ArrowRight"){
-		ev.preventDefault();
+		//ev.preventDefault();
 		this.player.moveRight();
 	}
 
@@ -508,31 +522,34 @@ class Game{
 	}
 }
  letShipFlayPad(ev){
-	 console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
-	 let gp=navigator.getGamepads()[ev.gamepad.index];
-	 console.log(this);
-	 console.log(gp);
-	if(navigator.getGamepads()[0].buttons[0].pressed==true){
-		ev.preventDefault();
+ 	//console.log(this);
+ 	//console.log(ev);
+	// console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
+	// let gp=navigator.getGamepads()[ev.gamepad.index];
+	// console.log(this);
+	// console.log(gp);
+	if(navigator.getGamepads()[0].buttons[12].pressed==true){
+		//ev.preventDefault();
 		this.player.moveUp();
 	}
-	else if(navigator.getGamepads()[0].buttons[1].pressed==true){
-		ev.preventDefault();
+	else if(navigator.getGamepads()[0].buttons[13].pressed==true){
+		//ev.preventDefault();
 		this.player.moveDown();
 	}
-	else if(navigator.getGamepads()[0].buttons[2].pressed==true){
-		ev.preventDefault();
+	else if(navigator.getGamepads()[0].buttons[14].pressed==true){
+		//ev.preventDefault();
 		this.player.moveLeft();
 	}
-	else if(navigator.getGamepads()[0].buttons[3].pressed==true){
-		ev.preventDefault();
+	else if(navigator.getGamepads()[0].buttons[15].pressed==true){
+		//ev.preventDefault();
 		this.player.moveRight();
 	}
 
-	else if(navigator.getGamepads()[0].buttons[4].pressed==true){
-		ev.preventDefault();
+	else if(navigator.getGamepads()[0].buttons[1].pressed==true){
+		//ev.preventDefault();
 		this.player.fireLaser();
 	}
+	start=rAF(this.letShipFlayPad.bind(this));
 }
 
 
@@ -564,18 +581,23 @@ class Game{
 		let Boss=new boss();
 		this.mainArea.appendChild(Boss.monster);
 		Boss.moveMonster();
-		this.bossInterval=setInterval(()=>{Boss.fireBoss()},2000);
+		this.bossInterval=setInterval(()=>{Boss.fireBoss()},3000);
 
 	}
 
 
 }
 function play(){
+	if(gameFlag===1) {
+		return;
+	}else{
 	const shooter= document.getElementById("player-controlled");
 	const mainArea=document.getElementById("main-play");
 	thisPlayer=new Player(shooter);
 	thisGame=new Game(mainArea,thisPlayer);
 	thisGame.gameStar();
+	gameFlag=1;
+	}
 
 
 }
