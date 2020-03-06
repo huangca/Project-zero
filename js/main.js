@@ -8,12 +8,19 @@ let gameFlag=0;
 let rAF = window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.requestAnimationFrame;
+
  let rAFStop = window.mozCancelRequestAnimationFrame ||
   window.webkitCancelRequestAnimationFrame ||
   window.cancelRequestAnimationFrame;
 
   let start;
 
+// window.onbeforeunload = function () {
+// 	console.log("reflash");
+//   window.scrollTo(0, 0);
+//   //document.body.scrollTop = 0;
+//   //document.documentElement.scrollTop = 0;
+// }
 
 function checkBoxInter(ele1,ele2){
 	let recl=ele1.getBoundingClientRect();
@@ -32,6 +39,8 @@ function gameOver(){
 		clearInterval(thisGame.bossInterval);
 		alert("game over");
 		window.location.reload(false);
+		window.scrollTo(0, 0);
+	
 }
 function victory(){
 	clearInterval(thisGame.monsterInterval);
@@ -103,9 +112,11 @@ moveUp(){
 	}
 }
  fireLaser(){
- 	let length=document.querySelectorAll('.laser').length;
- 	console.log(length);
- 	if(length>0) return;
+ 	let laser1=document.querySelectorAll('.laser');
+ 	let length=laser1.length;
+
+ 	if(length>=2) return;
+ 	if(length===1&&parseInt(laser1[0].style.top)>300) return;
 
 	let laser=this.createLaserElement();
 	$('#main-play').append(laser);
@@ -148,7 +159,7 @@ moveUp(){
 				setTimeout (function(){
 					monster.remove();
 				}
-				,200); //test maybe change
+				,100); //test maybe change
 				//monster.classList.add("dead-monster"); //may be will add later to count the point of player
 				scoreCounter.innerText=parseInt(scoreCounter.innerText)+100;
 				}
@@ -202,7 +213,7 @@ class monster{
 	let newMonster=document.createElement('img');
 	newMonster.src=monsterImg;
 	newMonster.classList.add('monster');
-	newMonster.style.top='0px';
+	newMonster.style.top='1px';
 	newMonster.style.left=`${Math.floor(Math.random()*500)+30}px`;
 	this.monster=newMonster;
 		}
@@ -264,19 +275,25 @@ class monsterRed extends monster{
 	}
 	monsterFire(){
 	let laser=this.createLaserElement();
+	//console.log(laser);
+	if(laser ===undefined) return; //empty return is undefined. compromised solution, actually is design problem.
 	$('#main-play').append(laser);
 	this.moveLaser(laser);
 }
 
 
  createLaserElement(){
+
 	let xPosition=parseInt(window.getComputedStyle(this.monster).getPropertyValue('left'));
 	let yPosition= parseInt(window.getComputedStyle(this.monster).getPropertyValue('top'));
+	//console.log(xPosition);
+	if(isNaN(xPosition)) return; //check if the monster alreay destory, the position is NaN, return 
 	let newLaser=document.createElement('img');
 	newLaser.src='images/fire.png';
 	newLaser.classList.add('Beam');
 	newLaser.style.left=`${xPosition}px`;
 	newLaser.style.top=`${yPosition+10}px`;
+	//debugger;
 	return newLaser;
 }
  moveLaser(laser){
@@ -324,28 +341,28 @@ class monsterRed extends monster{
 	},10);
 }
 
-checkLaserCollisionShip(laser,ship){
-	if(ship===null) return;
-	let laserLeft=parseInt(laser.style.left);
-	let laserTop=parseInt(laser.style.top);
-	let laserBottom=laserTop+20;
-	let laserRight=laserLeft+20;
-	let shipTop=parseInt(ship.style.top);
-	let shipBottom=shipTop+30;
-	let shipLeft=parseInt(ship.style.left);
-	let shipRight=shipLeft+30;
-	if(laserTop!=0){
+// checkLaserCollisionShip(laser,ship){
+// 	if(ship===null) return;
+// 	let laserLeft=parseInt(laser.style.left);
+// 	let laserTop=parseInt(laser.style.top);
+// 	let laserBottom=laserTop+20;
+// 	let laserRight=laserLeft+20;
+// 	let shipTop=parseInt(ship.style.top);
+// 	let shipBottom=shipTop+30;
+// 	let shipLeft=parseInt(ship.style.left);
+// 	let shipRight=shipLeft+30;
+// 	if(laserTop!=0){
 
-		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
-			return true;
-		}else {
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
-}
+// 		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
+// 			return true;
+// 		}else {
+// 			return false;
+// 		}
+// 	}
+// 	else{
+// 		return false;
+// 	}
+// }
 
 }
 
@@ -497,19 +514,19 @@ class Game{
 	 letShipFlay(ev){
 	 //console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
 	if(ev.key==="ArrowUp"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveUp();
 	}
 	else if(ev.key==="ArrowDown"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveDown();
 	}
 	else if(ev.key=="ArrowLeft"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveLeft();
 	}
 	else if(ev.key=="ArrowRight"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveRight();
 	}
 
@@ -544,9 +561,12 @@ class Game{
 
 	else if(navigator.getGamepads()[0].buttons[1].pressed==true){
 		//ev.preventDefault();
+
 		this.player.fireLaser();
 	}
 	start=rAF(this.letShipFlayPad.bind(this));
+
+	
 }
 
 
