@@ -112,9 +112,11 @@ moveUp(){
 	}
 }
  fireLaser(){
- 	let length=document.querySelectorAll('.laser').length;
- 	//console.log(length);
- 	if(length>0) return;
+ 	let laser1=document.querySelectorAll('.laser');
+ 	let length=laser1.length;
+
+ 	if(length>=2) return;
+ 	if(length===1&&parseInt(laser1[0].style.top)>300) return;
 
 	let laser=this.createLaserElement();
 	$('#main-play').append(laser);
@@ -211,7 +213,7 @@ class monster{
 	let newMonster=document.createElement('img');
 	newMonster.src=monsterImg;
 	newMonster.classList.add('monster');
-	newMonster.style.top='0px';
+	newMonster.style.top='1px';
 	newMonster.style.left=`${Math.floor(Math.random()*500)+30}px`;
 	this.monster=newMonster;
 		}
@@ -273,19 +275,25 @@ class monsterRed extends monster{
 	}
 	monsterFire(){
 	let laser=this.createLaserElement();
+	console.log(laser);
+	if(laser ===undefined) return; //empty return is undefined. compromised solution, actually is design problem.
 	$('#main-play').append(laser);
 	this.moveLaser(laser);
 }
 
 
  createLaserElement(){
+
 	let xPosition=parseInt(window.getComputedStyle(this.monster).getPropertyValue('left'));
 	let yPosition= parseInt(window.getComputedStyle(this.monster).getPropertyValue('top'));
+	console.log(xPosition);
+	if(isNaN(xPosition)) return; //check if the monster alreay destory, the position is NaN, return 
 	let newLaser=document.createElement('img');
 	newLaser.src='images/fire.png';
 	newLaser.classList.add('Beam');
 	newLaser.style.left=`${xPosition}px`;
 	newLaser.style.top=`${yPosition+10}px`;
+	//debugger;
 	return newLaser;
 }
  moveLaser(laser){
@@ -553,6 +561,7 @@ class Game{
 
 	else if(navigator.getGamepads()[0].buttons[1].pressed==true){
 		//ev.preventDefault();
+
 		this.player.fireLaser();
 	}
 	start=rAF(this.letShipFlayPad.bind(this));
