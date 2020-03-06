@@ -8,12 +8,17 @@ let gameFlag=0;
 let rAF = window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.requestAnimationFrame;
+
  let rAFStop = window.mozCancelRequestAnimationFrame ||
   window.webkitCancelRequestAnimationFrame ||
   window.cancelRequestAnimationFrame;
 
   let start;
 
+window.onbeforeunload = function () {
+	console.log("reflash");
+  window.scrollTo(0, 0);
+}
 
 function checkBoxInter(ele1,ele2){
 	let recl=ele1.getBoundingClientRect();
@@ -32,6 +37,7 @@ function gameOver(){
 		clearInterval(thisGame.bossInterval);
 		alert("game over");
 		window.location.reload(false);
+		//window.scrollTo(0, 0);
 }
 function victory(){
 	clearInterval(thisGame.monsterInterval);
@@ -104,7 +110,7 @@ moveUp(){
 }
  fireLaser(){
  	let length=document.querySelectorAll('.laser').length;
- 	console.log(length);
+ 	//console.log(length);
  	if(length>0) return;
 
 	let laser=this.createLaserElement();
@@ -324,28 +330,28 @@ class monsterRed extends monster{
 	},10);
 }
 
-checkLaserCollisionShip(laser,ship){
-	if(ship===null) return;
-	let laserLeft=parseInt(laser.style.left);
-	let laserTop=parseInt(laser.style.top);
-	let laserBottom=laserTop+20;
-	let laserRight=laserLeft+20;
-	let shipTop=parseInt(ship.style.top);
-	let shipBottom=shipTop+30;
-	let shipLeft=parseInt(ship.style.left);
-	let shipRight=shipLeft+30;
-	if(laserTop!=0){
+// checkLaserCollisionShip(laser,ship){
+// 	if(ship===null) return;
+// 	let laserLeft=parseInt(laser.style.left);
+// 	let laserTop=parseInt(laser.style.top);
+// 	let laserBottom=laserTop+20;
+// 	let laserRight=laserLeft+20;
+// 	let shipTop=parseInt(ship.style.top);
+// 	let shipBottom=shipTop+30;
+// 	let shipLeft=parseInt(ship.style.left);
+// 	let shipRight=shipLeft+30;
+// 	if(laserTop!=0){
 
-		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
-			return true;
-		}else {
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
-}
+// 		if(laserLeft<=shipRight&&laserRight>=shipLeft&&laserTop<=shipBottom&&laserBottom>=shipTop){
+// 			return true;
+// 		}else {
+// 			return false;
+// 		}
+// 	}
+// 	else{
+// 		return false;
+// 	}
+// }
 
 }
 
@@ -497,19 +503,19 @@ class Game{
 	 letShipFlay(ev){
 	 //console.log(ev);  //||navigator.getGamepads()[0].buttons[0].pressed
 	if(ev.key==="ArrowUp"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveUp();
 	}
 	else if(ev.key==="ArrowDown"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveDown();
 	}
 	else if(ev.key=="ArrowLeft"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveLeft();
 	}
 	else if(ev.key=="ArrowRight"){
-		//ev.preventDefault();
+		ev.preventDefault();
 		this.player.moveRight();
 	}
 
@@ -547,6 +553,8 @@ class Game{
 		this.player.fireLaser();
 	}
 	start=rAF(this.letShipFlayPad.bind(this));
+
+	
 }
 
 
