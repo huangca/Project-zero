@@ -275,7 +275,7 @@ class monsterRed extends monster{
 	}
 	monsterFire(){
 	let laser=this.createLaserElement();
-	console.log(laser);
+	//console.log(laser);
 	if(laser ===undefined) return; //empty return is undefined. compromised solution, actually is design problem.
 	$('#main-play').append(laser);
 	this.moveLaser(laser);
@@ -286,7 +286,7 @@ class monsterRed extends monster{
 
 	let xPosition=parseInt(window.getComputedStyle(this.monster).getPropertyValue('left'));
 	let yPosition= parseInt(window.getComputedStyle(this.monster).getPropertyValue('top'));
-	console.log(xPosition);
+	//console.log(xPosition);
 	if(isNaN(xPosition)) return; //check if the monster alreay destory, the position is NaN, return 
 	let newLaser=document.createElement('img');
 	newLaser.src='images/fire.png';
