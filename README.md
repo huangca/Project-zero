@@ -2,7 +2,7 @@
 simple shooting game
 
 click "play" button start play<br>
-control
+control<br>
 arrow button:direction<br>
 space:fire
 
