@@ -3,9 +3,9 @@ simple shooting game
 
 click "play" button start play<br>
 control
-arrow button:direction
+arrow button:direction<br>
 space:fire
 
-gamepad support!
+gamepad support!<br>
 D-pad:direction
 B:fire
