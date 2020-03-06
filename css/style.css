@@ -1,5 +1,9 @@
 @import "mystyle.css";
 
+body{
+	overflow: hidden;
+}
+
 #main-play{
 	background-color: transparent;
 	width: 600px;
@@ -41,7 +45,7 @@
 	height:50px;
 	position: absolute;
 }
-.monster-transition{
+/*.monster-transition{
 	opacity:1;
 	transition: opacity 1.5 ease-out;
 }
@@ -50,4 +54,4 @@
 	height:30px;
 	position: absolute;
 	opacity: 0;
-}
+}*/

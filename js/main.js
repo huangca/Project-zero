@@ -15,10 +15,12 @@ let rAF = window.mozRequestAnimationFrame ||
 
   let start;
 
-window.onbeforeunload = function () {
-	console.log("reflash");
-  window.scrollTo(0, 0);
-}
+// window.onbeforeunload = function () {
+// 	console.log("reflash");
+//   window.scrollTo(0, 0);
+//   //document.body.scrollTop = 0;
+//   //document.documentElement.scrollTop = 0;
+// }
 
 function checkBoxInter(ele1,ele2){
 	let recl=ele1.getBoundingClientRect();
@@ -37,7 +39,8 @@ function gameOver(){
 		clearInterval(thisGame.bossInterval);
 		alert("game over");
 		window.location.reload(false);
-		//window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
+	
 }
 function victory(){
 	clearInterval(thisGame.monsterInterval);
@@ -154,7 +157,7 @@ moveUp(){
 				setTimeout (function(){
 					monster.remove();
 				}
-				,200); //test maybe change
+				,100); //test maybe change
 				//monster.classList.add("dead-monster"); //may be will add later to count the point of player
 				scoreCounter.innerText=parseInt(scoreCounter.innerText)+100;
 				}
