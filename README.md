@@ -7,7 +7,7 @@ arrow button:direction<br>
 space:fire
 
 gamepad support!<br>
-D-pad:direction
+D-pad:direction<br>
 B:fire
 
 Introdution<br>
