@@ -10,8 +10,8 @@ gamepad support!<br>
 D-pad:direction
 B:fire
 
-Introdution
-Egal Lion: will come up at the half of screen.
-Red Dragon:will shoot fire ball
-Boss fight happen after gain 500 points.
+Introdution<br>
+Egale Lion: will come up at the half of screen.<br>
+Red Dragon:will shoot fire ball<br>
+Boss fight happen after gain 500 points.<br>
 
